@@ -5,7 +5,6 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod'
 
-import { cn } from "@/lib/utils";
 import { signUpSchema } from "@/lib/zod";
 
 import { handleCredentialsSignIn, handleSignUp } from "@/app/actions/authActions";
@@ -30,7 +29,6 @@ import LoadingButton from "@/components/loading-button";
 import ErrorMessage from "@/components/error-message";
 
 export default function SignUp() {
-    const [reset, setReset] = useState(false);
     const [globalError, setGlobalError] = useState<string>('');
 
     const form = useForm<z.infer<typeof signUpSchema>>({
@@ -58,6 +56,7 @@ export default function SignUp() {
                 setGlobalError(result.message);
             }
         } catch(error) {
+            console.log('An unexpected error occurred. Please try again!', error);
             setGlobalError('An unexpected error occurred. Please try again!');
         }
     }
