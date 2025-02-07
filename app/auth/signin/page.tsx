@@ -80,7 +80,7 @@ export default function SignIn() {
                             Log in to your account
                         </h3>
                         <p className="text-gray-400">
-                            Don't have an account?{" "}
+                            Don&apos;t have an account?{" "}
                             <a
                                 href="/auth/signup"
                                 className="font-medium text-purple-600 hover:text-purple-500"
