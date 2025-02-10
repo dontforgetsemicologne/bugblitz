@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { BugIcon } from "lucide-react";
-import { Bug } from '@/types';
+import { Bug } from '@/types/fspecific';
 import getAllBugs from '@/app/actions/bugActions';
 import Link from 'next/link';
 
@@ -30,6 +30,10 @@ export default function IssueList() {
 
         loadIssues();
     }, []);
+
+    if (loading) {
+        return <div className="flex justify-center p-8">Loading issues...</div>;
+    }
     
     return (
         <div className="w-full mx-auto">

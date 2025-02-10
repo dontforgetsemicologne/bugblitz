@@ -8,24 +8,9 @@ export interface Bug {
     priority: Priority;
     createdAt: Date;
     updatedAt: Date;
-    project: {
-        id: string;
-        name: string;
-        description: string | null;
-    };
-    reporter: {
-        name: string | null;
-        email: string;
-    };
-    assignee: {
-        name: string | null;
-        email: string;
-        image: string | null;
-    } | null;
-    comments: any[];
-    labels: any[];
+    projectId: string;
+    reporterId: string;
 }
-
 export type projectStatus = 'active' | 'completed' | 'in_progress' | 'inactive';
 
 export interface Project {

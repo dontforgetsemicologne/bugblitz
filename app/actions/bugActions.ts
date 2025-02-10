@@ -45,6 +45,7 @@ export async function createBug(projectId: string, data: {
             bug: bugs
         }
     } catch(error) {
+        console.log(error);
         return {
             success: false,
             message: `Project wasn't added successfully`,

@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 import { useTransition } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, SignalHigh } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { User } from "@/types/user";
 import { createBug } from "@/app/actions/bugActions";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
