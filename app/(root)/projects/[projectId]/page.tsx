@@ -2,7 +2,7 @@
 
 import { useParams } from "next/navigation";
 import ProjectDetail from "./project-details";
-import { BugIcon, Folder, Plus } from "lucide-react";
+import { BugIcon, Folder } from "lucide-react";
 import ProjectBugs from "./project-bugs-list";
 import ProjectUsers from "./project-users-list";
 import AddUser from "./add-user";

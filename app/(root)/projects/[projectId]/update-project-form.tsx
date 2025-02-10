@@ -85,6 +85,7 @@ export default function UpdateProjectForm({ id, currentTitle, currentDescription
                     </div>
                 )
             });
+            console.log(error);
         }
     };
 

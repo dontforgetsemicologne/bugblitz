@@ -286,7 +286,8 @@ export async function getProjectUsers(projectId: string) {
    
       return { success: true, data: users.map(member => member.user) };
     } catch (error) {
-      return { success: false, error: 'Failed to fetch project users' };
+        console.log(error)
+        return { success: false, error: 'Failed to fetch project users' };
     }
 }
 
@@ -354,7 +355,7 @@ export async function addMemberToProject(id: string, userId: string) {
                 role: 'member'
             }
         });
-        return { success: true };
+        return { success: true, data: newMember };
     } catch(error) {
         console.log(error);
         return { success: false, error: 'Failed to remove user from project' };
