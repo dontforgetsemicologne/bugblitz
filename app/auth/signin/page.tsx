@@ -165,7 +165,7 @@ function SignInPage() {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel className="font-medium text-gray-100/50">Username</FormLabel>
+                                    <FormLabel className="font-medium text-gray-100/50">Email</FormLabel>
                                     <FormControl>
                                         <Input
                                             type="email"

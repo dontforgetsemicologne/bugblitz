@@ -5,7 +5,7 @@ import bcryptjs from 'bcryptjs';
 import { NextAuthConfig } from "next-auth";
 
 import { signInSchema } from "@/lib/zod";
-import prisma from "@/lib/prisma";
+import { getUserByEmail, getUserById } from "@/data/user";
 
 const publicRoutes = ["/auth/signin", "/api/auth/signup"];
 const authRoutes = ["/auth/signin", "/auth/signup"];
@@ -19,19 +19,16 @@ export default {
                 password: { label: "Password", type: "password", placeholder: "Password" },
             },
             async authorize(credentials) {
-                let user = null;
-
                 const parsedCredentials = signInSchema.safeParse(credentials);
+
                 if (!parsedCredentials.success) {
                     console.error("Invalid credentials:", parsedCredentials.error.errors);
                     return null;
                 }
 
-                user = await prisma.user.findUnique({
-                    where: {
-                        email: credentials.email as string,
-                    },
-                });
+                const { email, password: userPassword } = parsedCredentials.data;
+
+                const user = await getUserByEmail(email);
 
                 if (!user) {
                     console.log("Invalid credentials");
@@ -43,7 +40,7 @@ export default {
                     return null;
                 }
 
-                const isPasswordValid = await bcryptjs.compare(credentials.password as string, user.password);
+                const isPasswordValid = await bcryptjs.compare(userPassword, user.password);
                 if (!isPasswordValid) {
                     console.log("Invalid password");
                     return null;
@@ -77,8 +74,8 @@ export default {
         },
         jwt({ token, user, trigger, session }) {
             if (user) {
-                token.id = user.id as string;
-                token.role = user.role as string;
+                token.id = user.id;
+                token.role = user.role;
             }
             if (trigger === "update" && session) {
                 token = { ...token, ...session };

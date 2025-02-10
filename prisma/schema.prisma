@@ -61,7 +61,7 @@ model Project {
   creatorId   String          @db.ObjectId
   creator     User            @relation("ProjectCreator", fields: [creatorId], references: [id])
   members     ProjectMember[]
-  bugs        Bug[]
+  bugs        Bug[]           @relation("ProjectBugs")
 }
 
 model ProjectMember {
@@ -73,7 +73,7 @@ model ProjectMember {
   
   // Relations
   user      User     @relation(fields: [userId], references: [id])
-  project   Project  @relation(fields: [projectId], references: [id])
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@unique([userId, projectId])
 }
@@ -89,7 +89,7 @@ model Bug {
   
   // Relations
   projectId   String        @db.ObjectId
-  project     Project       @relation(fields: [projectId], references: [id])
+  project     Project       @relation("ProjectBugs", fields: [projectId], references: [id], onDelete: Cascade)
   
   reporterId  String        @db.ObjectId
   reporter    User          @relation("BugReporter", fields: [reporterId], references: [id])
@@ -109,7 +109,7 @@ model Comment {
   
   // Relations
   bugId     String   @db.ObjectId
-  bug       Bug      @relation(fields: [bugId], references: [id])
+  bug       Bug      @relation(fields: [bugId], references: [id], onDelete: Cascade)
   
   userId    String   @db.ObjectId
   user      User     @relation(fields: [userId], references: [id])
@@ -133,7 +133,7 @@ model BugLabel {
   createdAt DateTime @default(now())
   
   // Relations
-  bug       Bug      @relation(fields: [bugId], references: [id])
+  bug       Bug      @relation(fields: [bugId], references: [id], onDelete: Cascade)
   label     Label    @relation(fields: [labelId], references: [id])
 
   @@unique([bugId, labelId])

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SessionProvider } from 'next-auth/react'
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Bug Blitz",
@@ -17,6 +18,7 @@ export default function RootLayout({
       <html lang="en">
         <body className='antialiased'>
           {children}
+          <Toaster/>
         </body>
       </html>
     </SessionProvider>
