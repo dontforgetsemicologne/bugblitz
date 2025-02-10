@@ -100,7 +100,6 @@ export async function deleteProject(projectId: string) {
     await prisma.project.delete({
         where: { id: projectId }
     });
-
     revalidatePath("/projects");
 }
 
@@ -192,5 +191,172 @@ export default async function getUserProjects() {
     } catch (error) {
         console.error("Error fetching user projects:", error);
         return [];
+    }
+}
+
+export async function getProjectById(id: string) {
+    try {
+        const user = await getCurrentUser();
+        if (!user) throw new Error("Unauthorized");
+
+        const project = await prisma.project.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                creator: true,
+                members: { include: { user: true } },
+                bugs: true
+            }
+        });
+
+        return {
+            data: {
+                id: project?.id,
+                title: project?.name,
+                subtitle: project?.description || 'No description provided',
+                creator: {
+                    name: project?.creator.name,
+                    image: project?.creator.image
+                },
+                createdAt: project?.createdAt.toLocaleDateString(),
+                membersCount: project?.members.length,
+            },
+            success: true,
+            message: 'Retrieved project info successfully'
+        };
+
+    } catch (error) {
+        console.error("Error fetching user projects:", error);
+        return {
+            success: false,
+            message: 'Cannot retrieve project info'
+        };
+    }
+}
+
+export async function getProjectBugs(id: string) {
+    try {
+        const user = await getCurrentUser();
+        if (!user) throw new Error("Unauthorized");
+
+        const project = await prisma.project.findUnique({
+            where: {
+                id: id
+            },
+            include: {
+                bugs: true
+            }
+        });
+
+        return {
+            data: {
+                bugs: project?.bugs
+            },
+            success: true,
+            message: 'Retrieved project bugs successfully'
+        };
+
+    } catch (error) {
+        console.error("Error fetching user projects:", error);
+        return {
+            success: false,
+            message: 'Cannot retrieve project bugs'
+        };
+    }
+}
+
+export async function getProjectUsers(projectId: string) {
+    try {
+        const users = await prisma.projectMember.findMany({
+            where: {
+                projectId: projectId
+            },
+            select: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true, 
+                        image: true
+                    }
+                }
+            }
+        });
+   
+      return { success: true, data: users.map(member => member.user) };
+    } catch (error) {
+      return { success: false, error: 'Failed to fetch project users' };
+    }
+}
+
+export async function deleteUserFromProject(id: string, userId: string) {
+    try {
+        const user = await getCurrentUser();
+        if (!user) throw new Error("Unauthorized");
+
+        const project = await prisma.project.findUnique({
+            where: { id },
+            include: { members: true }
+        });
+
+        const userIsMember = project?.members.find(m => m.userId === user.id);
+
+        if (!userIsMember || userIsMember.role !== 'admin') {
+            throw new Error("Not authorized to delete user!");
+        }
+
+        await prisma.projectMember.delete({
+            where: { 
+                userId_projectId: {
+                    userId: userId,
+                    projectId: id
+                }    
+            }
+        });
+        return { success: true };
+    } catch(error) {
+        console.log(error);
+        return { success: false, error: 'Failed to remove user from project' };
+    }
+}
+
+export async function addMemberToProject(id: string, userId: string) {
+    try {
+        const user = await getCurrentUser();
+        if (!user) throw new Error("Unauthorized");
+
+        const isAdmin = await prisma.projectMember.findUnique({
+            where: { userId_projectId: { userId: user.id, projectId: id } },
+        });
+
+        if(isAdmin?.role !== 'admin') {
+            throw new Error("Not authorized to add member!");
+        }
+
+        const projectMember = await prisma.projectMember.findUnique({
+            where: {
+                userId_projectId: {
+                    userId: userId,
+                    projectId: id
+                }
+            }
+        });
+
+        if (projectMember) {
+            return { success: false, error: 'User is already a member' };
+        }
+
+        const newMember = await prisma.projectMember.create({
+            data: { 
+                userId: userId,
+                projectId: id,
+                role: 'member'
+            }
+        });
+        return { success: true };
+    } catch(error) {
+        console.log(error);
+        return { success: false, error: 'Failed to remove user from project' };
     }
 }

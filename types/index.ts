@@ -24,3 +24,29 @@ export interface Project {
     bugsCount: number;
     bugs: Bug[];
 }
+
+export interface projectUser {
+    id: string;
+    name: string | null;
+    email: string;
+    image: string | null;
+}
+
+export interface addUser {
+    createdAt: string;
+    updatedAt: string;
+    emailVerified: string | null;
+    id: string;
+    name: string | null;
+    email: string;
+    image: string | null;
+    password: string | null;
+    role: string;
+    isEmailVerified: boolean;
+}
+
+export interface userAdd {
+    image: string | null;
+    id: string;
+    name: string | null;
+}

@@ -72,7 +72,7 @@ export default function IssueList() {
                                     </div>
                                 </div>
                                 <div className='flex justify-between items-center'>
-                                    <span className="text-xs px-1.5 py-0.5 rounded-xl bg-amber-500/20 text-amber-400 font-medium">
+                                    <span className={`text-xs px-1.5 py-0.5 rounded-xl font-medium ${bug.priority === 'CRITICAL' ? 'bg-red-500/20 text-red-400 ' : bug.priority === 'HIGH' ? 'bg-yellow-500/20 text-yellow-400' : bug.priority === 'MEDIUM' ? 'bg-blue-500/20 text-blue-400' : bug.priority === 'LOW' ? 'bg-green-500/20 text-green-400' : 'text-zinc-500'}`}>
                                         {bug.priority}
                                     </span>
                                     <TooltipProvider>

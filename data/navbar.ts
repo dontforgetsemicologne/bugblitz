@@ -14,7 +14,6 @@ interface NavItemProps {
 
 export const navigation: NavItemProps[] = [
     { title: 'Home', icon: Home, href: '/' },
-    { title: 'Dashboard', icon: BarChart2, href: '/dashboard' },
     { title: 'Projects', icon: Folder, href: '/projects' },
     { title: 'Issues', icon: Wrench, href: '/issues' },
 ]

@@ -25,3 +25,15 @@ export interface Bug {
     comments: any[];
     labels: any[];
 }
+
+export interface ProjectDetails {
+    id: string | undefined;
+    title: string | undefined;
+    subtitle: string;
+    creator: {
+        name: string | null | undefined;
+        image: string | null | undefined;
+    };
+    createdAt: string | undefined;
+    membersCount: number | undefined;
+}
