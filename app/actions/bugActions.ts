@@ -116,6 +116,31 @@ export async function deleteBug(bugId: string) {
     }
 }
 
+export async function getBugById(id: string) {
+    const user = await getCurrentUser();
+    if (!user) throw new Error("Unauthorized");
+
+    try {
+        const bugs = await prisma.bug.findUnique({
+            where:{ id },
+            include: {
+                reporter: { select: { name: true, email: true, image: true } },
+                assignee: { select: { name: true, email: true,image: true } },
+            },
+        });
+
+        return {
+            success: true,
+            bugs: bugs
+        };
+    } catch (error) {
+        console.error('Error fetching bugs:', error);
+        return {
+            success: false,
+            message: 'Failed to fetch bugs'
+        };
+    }
+}
 
 export default async function getAllBugs() {
     const user = await getCurrentUser();
