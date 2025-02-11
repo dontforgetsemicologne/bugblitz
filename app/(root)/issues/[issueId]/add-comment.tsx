@@ -1,7 +1,7 @@
 'use client'
 
 import { CheckCircle2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import {
     PopoverForm,
@@ -28,7 +28,7 @@ export default function AddComment() {
     const params = useParams();
     const bugId = params?.issueId as string;
 
-    const handleSubmit = async () => {
+    const handleSubmit = useCallback(async () => {
         if (!comment) return;
         
         setFormState("loading");
@@ -75,7 +75,7 @@ export default function AddComment() {
                 )
             });
         }
-    };
+    }, [bugId, comment, router, setOpen, toast]); 
 
     useEffect(() => {
         const handleKeyDown = async (event: KeyboardEvent) => {

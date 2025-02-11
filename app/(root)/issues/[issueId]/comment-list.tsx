@@ -55,6 +55,7 @@ export default function CommentList() {
                     setError(response.error || 'Failed to load comments');
                 }
             } catch (err) {
+                console.log(err);
                 setError('An unexpected error occurred');
             } finally {
                 setLoading(false);
