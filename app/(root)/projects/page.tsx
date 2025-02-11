@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import { Folder } from "lucide-react";
 import ProjectList from "@/components/project-list";
 import ProjectForm from "@/components/project-form";

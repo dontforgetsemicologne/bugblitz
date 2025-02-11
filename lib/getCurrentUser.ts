@@ -1,16 +1,17 @@
 import { auth } from "@/auth";
 import { getUserById } from "@/data/user";
+import { headers } from 'next/headers'
 
 export async function getCurrentUser() {
     try {
-        const session = await auth();
+        headers();
 
+        const session = await auth();
         if(!session?.user.id) {
             return null;
         }
 
         const currentUser = await getUserById(session.user.id);
-
         if(!currentUser) {
             return null;
         }

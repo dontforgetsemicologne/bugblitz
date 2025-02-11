@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import IssueForm from "@/components/issue-form";
 import IssueList from "@/components/issue-list";
 import { BugIcon } from "lucide-react";
