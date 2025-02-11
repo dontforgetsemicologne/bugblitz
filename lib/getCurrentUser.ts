@@ -3,9 +3,8 @@ import { getUserById } from "@/data/user";
 import { headers } from 'next/headers'
 
 export async function getCurrentUser() {
+    headers();
     try {
-        headers();
-
         const session = await auth();
         if(!session?.user.id) {
             return null;
