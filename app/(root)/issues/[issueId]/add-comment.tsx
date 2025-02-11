@@ -1,6 +1,6 @@
 'use client'
 
-import { CheckCircle2, Plus } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import {
@@ -89,7 +89,7 @@ export default function AddComment() {
       
         window.addEventListener("keydown", handleKeyDown);
         return () => window.removeEventListener("keydown", handleKeyDown);
-    }, [open, formState]);
+    }, [open, formState, handleSubmit]);
     
     return (
         <div className="flex w-full items-center justify-center">

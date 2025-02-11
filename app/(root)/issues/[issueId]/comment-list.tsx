@@ -1,6 +1,6 @@
 'use client'
 
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { getAllBugComments } from "@/app/actions/commentActions";
@@ -38,7 +38,6 @@ function getTimeAgo(date: Date): string {
 }
 
 export default function CommentList() {
-    const router = useRouter();
     const params = useParams();
     const bugId = params?.issueId as string;
     

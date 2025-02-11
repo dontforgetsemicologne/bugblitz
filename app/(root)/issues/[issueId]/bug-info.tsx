@@ -8,15 +8,40 @@ import { BugIcon, Clock, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import BugActions from "./bug-actions";
 
+interface User {
+    name: string | null;
+    email: string;
+    image: string | null;
+}
+
+interface BugInfo {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
+    title: string;
+    description: string;
+    status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED' | 'CLOSED';
+    priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'CRITICAL';
+    projectId: string;
+    reporterId: string;
+    assigneeId: string | null;
+    reporter: User;
+    assignee: User | null;
+}
+
 export default function BugsInfo({ id }: { id: string }) {
-    const [bugInfo, setBugInfo] = useState<any>(null);
+    const [bugInfo, setBugInfo] = useState<BugInfo | null>(null);
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         async function fetchBugDetails() {
             try {
                 const result = await getBugById(id);
-                setBugInfo(result.bugs);
+                if (result.bugs) {
+                    setBugInfo(result.bugs);
+                } else {
+                    setBugInfo(null);
+                }
                 setIsLoading(false);
             } catch (error) {
                 console.error('Failed to fetch bug details', error);
@@ -81,7 +106,7 @@ export default function BugsInfo({ id }: { id: string }) {
                         </span>
                         <span className="text-sm text-zinc-400">
                             <Clock className="w-4 h-4 inline mr-1" />
-                            {formatDate(bugInfo.createdAt)}
+                            {formatDate(bugInfo.createdAt.toLocaleDateString())}
                         </span>
                     </div>
                     <BugActions 
@@ -90,7 +115,7 @@ export default function BugsInfo({ id }: { id: string }) {
                         currentDescription={bugInfo.description}
                         currentStatus={bugInfo.status}
                         currentPriority={bugInfo.priority}
-                        currentAssigneeId={bugInfo.assignee?.id}
+                        currentAssigneeId={bugInfo.assigneeId}
                     />
                 </CardHeader>
                 <CardContent className="space-y-4">

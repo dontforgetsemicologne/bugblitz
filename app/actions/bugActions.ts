@@ -125,7 +125,7 @@ export async function getBugById(id: string) {
             where:{ id },
             include: {
                 reporter: { select: { name: true, email: true, image: true } },
-                assignee: { select: { name: true, email: true,image: true } },
+                assignee: { select: { name: true, email: true, image: true } },
             },
         });
 

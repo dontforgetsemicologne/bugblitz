@@ -69,8 +69,8 @@ export default function BugActions({
         defaultValues: {
             title: currentTitle,
             description: currentDescription,
-            status: currentStatus as any,
-            priority: currentPriority as any,
+            status: currentStatus as "OPEN" | "IN_PROGRESS" | "RESOLVED",
+            priority: currentPriority as "LOW" | "MEDIUM" | "HIGH" | "CRITICAL",
             assigneeId: currentAssigneeId
         }
     });
@@ -95,6 +95,7 @@ export default function BugActions({
             setOpen(false);
             router.refresh();
         } catch (error) {
+            console.log(error);
             toast({
                 description: (
                     <div className="relative overflow-hidden rounded-lg border bg-red-950/20 border-red-800/30 p-4 shadow-xs">
@@ -129,6 +130,7 @@ export default function BugActions({
             
             router.push('/issues');
         } catch (error) {
+            console.log(error);
             toast({
                 description: (
                     <div className="relative overflow-hidden rounded-lg border bg-red-950/20 border-red-800/30 p-4 shadow-xs">
